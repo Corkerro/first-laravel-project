@@ -19,12 +19,21 @@ class IndexController extends Controller
 
         $filter = app()->make(PostFilter::class, ['queryParams' => array_filter($data)]);
 
-//        $posts = Post::filter($filter)->paginate(isset($request['paginate']) ? $request['paginate'] : 10);
+        $posts = Post::filter($filter)->paginate($perPage, ["*"], 'page', $page);
+
+        return view('post.index', compact('posts'));
+    }
+    public function api(FilterRequest $request)
+    {
+        $data = $request->validated();
+
+        $page = $data['page'] ?? 1;
+        $perPage = $data['per_page'] ?? 10;
+
+        $filter = app()->make(PostFilter::class, ['queryParams' => array_filter($data)]);
 
         $posts = Post::filter($filter)->paginate($perPage, ["*"], 'page', $page);
 
         return PostResource::collection($posts);
-
-        return view('post.index', compact('posts'));
     }
 }
