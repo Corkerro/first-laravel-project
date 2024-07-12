@@ -13,10 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome')->name('home');
-});
-
 
 Route::group(['namespace' => 'Post'], function () {
     Route::get('/posts', 'IndexController')->name('post.index');
